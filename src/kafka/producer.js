@@ -4,8 +4,8 @@ const { Kafka } = require("kafkajs");
 run();
 async function run() {
   const topic = process.env.topicName;
-  const employeeName = process.argv[2];
-  const partition = employeeName[0].toLowerCase() < "n" ? 0 : 1;
+  const message = process.argv[2];
+  const partition = message[0].toLowerCase() < "n" ? 0 : 1;
   try {
     const kafka = new Kafka({
       clientId: process.env.clientId,
@@ -18,12 +18,12 @@ async function run() {
       topic,
       messages: [
         {
-          value: employeeName,
+          value: message,
           partition,
         },
       ],
     });
-    console.log(`Produced successfully ${JSON.stringify(result)}`);
+    console.log(`Produced message ${JSON.stringify(result)}`);
     await producer.disconnect();
     console.log("Producer disconnected");
   } catch (e) {
